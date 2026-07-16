@@ -16,7 +16,7 @@ import { apiClient } from './services/apiClient'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const ACTIVITY_SAMPLE_INTERVAL_MS = 60_000
-const SCREENSHOT_INTERVAL_MS = 10_000
+const SCREENSHOT_INTERVAL_MS = 10_000 // isko 2-3 min krna hoga
 const QUEUE_FLUSH_INTERVAL_MS = 30_000
 const HEARTBEAT_INTERVAL_MS = 60_000
 const IDLE_THRESHOLD_SECONDS = 300

@@ -206,7 +206,7 @@ export default function SettingsPage({ user, employee, projects, onNavigate, onL
           </div>
 
           <form onSubmit={handleInvite} className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <Input label="Name" name="invite-name" placeholder="Jamie Fox" value={inviteName} onChange={(e) => setInviteName(e.target.value)} />
+            <Input label="Name" name="invite-name" placeholder="Your Name" value={inviteName} onChange={(e) => setInviteName(e.target.value)} />
             <Input label="Role" name="invite-role" placeholder="Engineer" value={inviteRole} onChange={(e) => setInviteRole(e.target.value)} />
             <Select label="Project" name="invite-project" value={inviteProjectId} onChange={(e) => setInviteProjectId(e.target.value)}>
               {projects.map((p) => (

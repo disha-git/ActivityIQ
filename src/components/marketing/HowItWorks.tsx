@@ -1,10 +1,19 @@
 import { motion } from 'framer-motion'
-import { Play } from 'lucide-react'
+import { Play, Layout, LineChart, MessageCircle, FileCode, CheckCircle, Image as ImageIcon } from 'lucide-react'
 import Button from '../ui/Button'
 
 interface HowItWorksProps {
   onNavigate: (view: 'login') => void
 }
+
+const MOCK_SCREENS = [
+  Layout,
+  LineChart,
+  MessageCircle,
+  FileCode,
+  CheckCircle,
+  ImageIcon
+]
 
 export default function HowItWorks({ onNavigate }: HowItWorksProps) {
   return (
@@ -49,8 +58,17 @@ export default function HowItWorks({ onNavigate }: HowItWorksProps) {
             className="flex-1"
           >
             <div className="grid grid-cols-3 gap-2.5 rounded-2xl border border-slate-200 bg-white p-5 shadow-soft-lg dark:border-slate-800 dark:bg-slate-900">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="aspect-[4/3] rounded-xl bg-gradient-to-br from-brand-100 to-accent-50 dark:from-brand-500/15 dark:to-accent-500/10" />
+              {MOCK_SCREENS.map((Icon, i) => (
+                <div key={i} className="flex aspect-[4/3] flex-col overflow-hidden rounded-xl border border-white/40 bg-gradient-to-br from-brand-50 to-brand-100/50 shadow-sm dark:border-white/5 dark:from-brand-900/20 dark:to-brand-800/10">
+                  <div className="flex h-4 items-center gap-1 bg-white/40 px-2 dark:bg-white/5">
+                    <div className="h-1.5 w-1.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                  </div>
+                  <div className="flex flex-1 items-center justify-center text-brand-600/30 dark:text-brand-400/30">
+                    <Icon size={24} strokeWidth={1.5} />
+                  </div>
+                </div>
               ))}
             </div>
           </motion.div>

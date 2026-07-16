@@ -41,7 +41,7 @@ export default function MarketingFooter() {
             <div className="mt-5 flex items-center gap-3 text-slate-400 dark:text-slate-500">
               <a href="#linkedin" aria-label="LinkedIn" className="transition-colors hover:text-brand-600 dark:hover:text-brand-400"><LinkedinIcon /></a>
               <a href="#twitter" aria-label="X (Twitter)" className="transition-colors hover:text-brand-600 dark:hover:text-brand-400"><XIcon /></a>
-              <a href="#github" aria-label="GitHub" className="transition-colors hover:text-brand-600 dark:hover:text-brand-400"><GithubIcon /></a>
+              <a href="https://github.com/disha-git" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="transition-colors hover:text-brand-600 dark:hover:text-brand-400"><GithubIcon /></a>
             </div>
           </div>
 
