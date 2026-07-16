@@ -1,0 +1,31 @@
+{
+  "name": "activityiq-agent",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ActivityIQ desktop tracking agent",
+  "author": "ActivityIQ",
+  "main": "out/main/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "dist": "electron-vite build && electron-builder"
+  },
+  "dependencies": {
+    "active-win": "^9.0.0",
+    "electron-log": "^5.4.4",
+    "electron-updater": "^6.8.9",
+    "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "electron": "^43.1.0",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "typescript": "~6.0.2",
+    "vite": "^5.4.20"
+  }
+}

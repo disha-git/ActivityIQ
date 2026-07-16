@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 45 npm run dev)",
+      "Bash(echo \"=== exit $? ===\")",
+      "Read(//Users/dishadasgupta/Desktop/ActivityIQf/**)",
+      "Bash(lsof -nP -iTCP:4000 -sTCP:LISTEN)",
+      "Bash(node /private/tmp/claude-501/-Users-dishadasgupta-Desktop-ActivityIQf-agent/176aea52-da4c-49fd-a6f9-4d1bcbeff7f8/scratchpad/probe.mjs)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}
