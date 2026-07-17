@@ -113,6 +113,7 @@ npm run agent:install
 **Development Mode (Web + API)**
 To run both the Vite frontend and the Express backend concurrently:
 ```bash
+terminal 1
 npm run dev:all
 ```
 - **Web Dashboard**: `http://localhost:5173`
@@ -126,6 +127,7 @@ npx tsx server/seed.ts
 **Running the Desktop Agent**
 In a separate terminal, start the Electron tracking agent:
 ```bash
+terminal 2
 npm run agent:dev
 ```
 
