@@ -21,22 +21,22 @@ The platform consists of three main components:
 ## 🛠️ Tech Stack
 
 **Frontend (Web Dashboard)**
-- React 19
-- Vite
-- Tailwind CSS v4 (with custom glassmorphism design tokens)
-- Framer Motion (for fluid interactions and transitions)
-- Lucide React (Iconography)
-- Recharts (Data visualization)
+- React 19 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="22">
+- Vite <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" width="22">
+- Tailwind CSS v4 (with custom glassmorphism design tokens) <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" width="22">
+- Framer Motion (for fluid interactions and transitions) <img src="https://cdn.simpleicons.org/framer/ffffff" width="22">
+- Lucide React (Iconography) 
+- Recharts (Data visualization) 
 
 **Backend (API Server)**
-- Node.js & Express
-- MySQL (mysql2) for relational data and `LONGBLOB` storage
-- Socket.IO (Real-time bidirectional events)
+- Node.js & Express <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="22"> 
+- MySQL (mysql2) for relational data and `LONGBLOB` storage  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" width="22">
+- Socket.IO (Real-time bidirectional events) <img src="https://cdn.simpleicons.org/socketdotio/ffffff" width="22">
 - JSON Web Tokens (JWT) for secure authentication
 
 **Desktop Agent**
-- Electron
-- Electron-Vite (React rendering)
+- Electron <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg" width="22">
+- Electron-Vite (React rendering) <img src="https://cdn.simpleicons.org/vite/646CFF" width="22">
 - active-win (Foreground window & URL tracking)
 
 ---
