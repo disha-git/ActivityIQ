@@ -95,6 +95,12 @@ export async function initDb(): Promise<void> {
   for (const statement of readSchemaStatements()) {
     await p.query(statement)
   }
+
+  try {
+    await p.query('ALTER TABLE users ADD COLUMN is_admin INT NOT NULL DEFAULT 0')
+  } catch {
+    // Column already exists or table was newly created with column
+  }
 }
 
 /** Run a SELECT and return all rows. */

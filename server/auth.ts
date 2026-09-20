@@ -25,6 +25,7 @@ export interface UserRow {
   email: string
   password_hash: string
   name: string
+  is_admin?: number
   created_at: string
 }
 

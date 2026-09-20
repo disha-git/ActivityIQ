@@ -13,6 +13,7 @@ interface SidebarProps {
   user: ApiUser
   employee: ApiEmployee
   onLogout: () => void
+  onOpenAdmin?: () => void
   mobileOpen: boolean
   onCloseMobile: () => void
 }
@@ -29,6 +30,7 @@ function SidebarContent({
   user,
   employee,
   onLogout,
+  onOpenAdmin,
   onCloseMobile,
 }: Omit<SidebarProps, 'mobileOpen'> & { onCloseMobile?: () => void }) {
   return (
@@ -81,7 +83,16 @@ function SidebarContent({
         })}
       </nav>
 
-      <div className="border-t border-slate-200 p-3 dark:border-slate-800">
+      <div className="border-t border-slate-200 p-3 dark:border-slate-800 space-y-1">
+        {user.is_admin === 1 && (
+          <button
+            type="button"
+            onClick={onOpenAdmin}
+            className="flex w-full items-center gap-2.5 rounded-xl bg-brand-50 px-3 py-2 text-xs font-bold text-brand-600 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-300 dark:hover:bg-brand-500/20"
+          >
+            <Sparkles size={15} /> Switch to Admin Panel
+          </button>
+        )}
         <div className="flex items-center gap-2.5 rounded-xl px-2 py-2">
           <Avatar initials={employee.initials} color={employee.color} size={32} />
           <div className="min-w-0 flex-1">

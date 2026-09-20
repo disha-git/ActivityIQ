@@ -8,6 +8,7 @@ import { api, type ApiEmployee, type ApiProject, type ApiUser } from './lib/api'
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const ReportsPage = lazy(() => import('./pages/ReportsPage'))
 const SettingsPage = lazy(() => import('./pages/SettingsPage'))
+const AdminPage = lazy(() => import('./pages/AdminPage'))
 
 function AppLoading() {
   return (
@@ -17,7 +18,7 @@ function AppLoading() {
   )
 }
 
-type View = 'landing' | 'login' | 'signup' | 'app'
+type View = 'landing' | 'login' | 'signup' | 'app' | 'admin'
 
 function App() {
   const [view, setView] = useState<View>('landing')
@@ -34,7 +35,8 @@ function App() {
       .then(({ user, employee }) => {
         setUser(user)
         setEmployee(employee)
-        setView('app')
+        const isAdmin = user.is_admin === 1
+        setView(isAdmin ? 'admin' : 'app')
       })
       .catch(() => {})
       .finally(() => setCheckingSession(false))
@@ -45,7 +47,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (view === 'app') loadProjects()
+    if (view === 'app' || view === 'admin') loadProjects()
   }, [view])
 
   function handleNavigate(next: 'landing' | 'login' | 'signup') {
@@ -56,7 +58,8 @@ function App() {
   function handleLogin(loggedInUser: ApiUser, loggedInEmployee: ApiEmployee) {
     setUser(loggedInUser)
     setEmployee(loggedInEmployee)
-    setView('app')
+    const isAdmin = loggedInUser.is_admin === 1
+    setView(isAdmin ? 'admin' : 'app')
   }
 
   async function handleLogout() {
@@ -71,6 +74,19 @@ function App() {
       <div className="flex min-h-svh items-center justify-center bg-white text-sm font-semibold text-slate-500 dark:bg-slate-950 dark:text-slate-400">
         Loading ActivityIQ…
       </div>
+    )
+  }
+
+  if (view === 'admin' && user && employee) {
+    return (
+      <Suspense fallback={<AppLoading />}>
+        <AdminPage
+          user={user}
+          employee={employee}
+          onReturnToUserDashboard={() => setView('app')}
+          onLogout={handleLogout}
+        />
+      </Suspense>
     )
   }
 

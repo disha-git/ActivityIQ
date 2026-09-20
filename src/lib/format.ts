@@ -10,3 +10,7 @@ export function formatClock(totalSeconds: number): string {
   const seconds = Math.floor(totalSeconds % 60)
   return [hours, minutes, seconds].map((n) => n.toString().padStart(2, '0')).join(':')
 }
+
+export function formatTime(totalSeconds: number): string {
+  return formatClock(totalSeconds)
+}
