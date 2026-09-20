@@ -11,6 +11,7 @@ import trackingRouter from './routes/tracking.ts'
 import agentRouter from './routes/agent.ts'
 import aiRouter from './routes/ai.ts'
 import screenshotsRouter from './routes/screenshots.ts'
+import adminRouter from './routes/admin.ts'
 
 const app = express()
 app.use(express.json({ limit: '10mb' }))
@@ -23,6 +24,7 @@ app.use('/api/tracking', trackingRouter)
 app.use('/api/agent', agentRouter)
 app.use('/api/ai', aiRouter)
 app.use('/api/screenshots', screenshotsRouter)
+app.use('/api/admin', adminRouter)
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true })

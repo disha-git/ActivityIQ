@@ -1,4 +1,5 @@
 import { get, run, newId } from './db.ts'
+import { hashPassword } from './auth.ts'
 
 interface SeedEmployee {
   name: string
@@ -48,6 +49,22 @@ export async function seedIfEmpty(): Promise<void> {
   }
 
   const now = new Date()
+
+  // Seed admin user exclusively if ADMIN_EMAIL & ADMIN_PASSWORD are set in process.env
+  const adminEmail = process.env.ADMIN_EMAIL
+  const adminPassword = process.env.ADMIN_PASSWORD
+  if (adminEmail && adminPassword) {
+    const adminUserId = newId('u')
+    await run(
+      'INSERT INTO users (id, email, password_hash, name, is_admin, created_at) VALUES (?, ?, ?, ?, 1, ?)',
+      [adminUserId, adminEmail, hashPassword(adminPassword), 'System Admin', now.toISOString()],
+    )
+    const adminEmpId = newId('e')
+    await run(
+      'INSERT INTO employees (id, user_id, name, role, initials, color, project_id, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [adminEmpId, adminUserId, 'System Admin', 'Lead Admin', 'SA', '#21c17c', 'p1', 'online', now.toISOString()],
+    )
+  }
 
   for (const emp of EMPLOYEES) {
     const empId = newId('e')

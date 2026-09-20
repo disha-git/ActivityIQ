@@ -32,8 +32,10 @@ async function setSessionCookie(res: import('express').Response, userId: string)
 async function respondWithSession(res: import('express').Response, user: UserRow) {
   const employee = await ensureEmployeeForUser(user)
   await setSessionCookie(res, user.id)
+  const adminEmail = process.env.ADMIN_EMAIL
+  const isAdmin = user.is_admin === 1 || (Boolean(adminEmail) && user.email === adminEmail) ? 1 : 0
   res.json({
-    user: { id: user.id, email: user.email, name: user.name },
+    user: { id: user.id, email: user.email, name: user.name, is_admin: isAdmin },
     employee,
   })
 }
@@ -46,13 +48,15 @@ router.post('/demo', async (_req, res) => {
       email: 'demo@activityiq.io',
       password_hash: hashPassword(newId('pw')),
       name: 'Demo Manager',
+      is_admin: 1,
       created_at: new Date().toISOString(),
     }
-    await run('INSERT INTO users (id, email, password_hash, name, created_at) VALUES (?, ?, ?, ?, ?)', [
+    await run('INSERT INTO users (id, email, password_hash, name, is_admin, created_at) VALUES (?, ?, ?, ?, ?, ?)', [
       user.id,
       user.email,
       user.password_hash,
       user.name,
+      1,
       user.created_at,
     ])
   }
@@ -67,18 +71,23 @@ router.post('/signup', validateBody(credentialsSchema), async (req, res) => {
     return
   }
 
+  const adminEmail = process.env.ADMIN_EMAIL
+  const isAdmin = Boolean(adminEmail) && email === adminEmail ? 1 : 0
+
   const user: UserRow = {
     id: newId('u'),
     email,
     password_hash: hashPassword(password),
     name: name || email.split('@')[0],
+    is_admin: isAdmin,
     created_at: new Date().toISOString(),
   }
-  await run('INSERT INTO users (id, email, password_hash, name, created_at) VALUES (?, ?, ?, ?, ?)', [
+  await run('INSERT INTO users (id, email, password_hash, name, is_admin, created_at) VALUES (?, ?, ?, ?, ?, ?)', [
     user.id,
     user.email,
     user.password_hash,
     user.name,
+    user.is_admin,
     user.created_at,
   ])
 
@@ -89,19 +98,24 @@ router.post('/login', validateBody(credentialsSchema.omit({ name: true })), asyn
   const { email, password } = req.body as z.infer<typeof credentialsSchema>
   let user = await get<UserRow>('SELECT * FROM users WHERE email = ?', [email])
 
+  const adminEmail = process.env.ADMIN_EMAIL
+  const isAdmin = Boolean(adminEmail) && email === adminEmail ? 1 : 0
+
   if (!user) {
     user = {
       id: newId('u'),
       email,
       password_hash: hashPassword(password),
       name: email.split('@')[0],
+      is_admin: isAdmin,
       created_at: new Date().toISOString(),
     }
-    await run('INSERT INTO users (id, email, password_hash, name, created_at) VALUES (?, ?, ?, ?, ?)', [
+    await run('INSERT INTO users (id, email, password_hash, name, is_admin, created_at) VALUES (?, ?, ?, ?, ?, ?)', [
       user.id,
       user.email,
       user.password_hash,
       user.name,
+      user.is_admin,
       user.created_at,
     ])
   } else if (!verifyPassword(password, user.password_hash)) {
@@ -126,7 +140,9 @@ router.get('/me', async (req, res) => {
     return
   }
   const employee = await ensureEmployeeForUser(user)
-  res.json({ user: { id: user.id, email: user.email, name: user.name }, employee })
+  const adminEmail = process.env.ADMIN_EMAIL
+  const isAdmin = user.is_admin === 1 || (Boolean(adminEmail) && user.email === adminEmail) ? 1 : 0
+  res.json({ user: { id: user.id, email: user.email, name: user.name, is_admin: isAdmin }, employee })
 })
 
 function generatePairingCode(): string {
