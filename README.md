@@ -41,9 +41,9 @@ The platform consists of three main components:
 
 ---
 
-## 📁 Folder Structure
 
-## 📁 Folder Structure (Expanded)
+
+## 📁 Folder Structure 
 
 ```text
 ActivityIQ/
