@@ -43,29 +43,78 @@ The platform consists of three main components:
 
 ## 📁 Folder Structure
 
+## 📁 Folder Structure (Expanded)
+
 ```text
 ActivityIQ/
-├── agent/                  # Electron Desktop Agent
+├── agent/                        # Electron Desktop Agent
 │   ├── src/
-│   │   ├── main/           # Electron main process (tracking logic, API client)
-│   │   ├── preload/        # Context bridge for secure IPC
-│   │   └── renderer/       # Electron UI (React)
-├── server/                 # Express Backend API
-│   ├── routes/             # Express REST API endpoints
-│   ├── services/           # Business logic & tracking managers
-│   ├── db.ts               # MySQL connection & queries
-│   ├── schema.sql          # Database schema definition
-│   ├── seed.ts             # Demo data generator
-│   └── index.ts            # Server entry point
-├── src/                    # Web Dashboard Frontend (React)
-│   ├── components/         # Reusable UI, Layout, and Marketing components
-│   ├── pages/              # Application pages (Dashboard, Reports, Settings, etc.)
-│   ├── hooks/              # Custom React hooks (useTimeline, useSocket, etc.)
-│   ├── lib/                # API client & utilities
-│   └── index.css           # Global styles and Tailwind tokens
-├── package.json            # Web and API dependencies
-└── vite.config.ts          # Vite configuration for the web app
+│   │   ├── main/                 # Electron main process (tracking logic, API client)
+│   │   ├── preload/              # Context bridge for secure IPC
+│   │   └── renderer/            # Electron UI (React)
+│   ├── electron.vite.config.ts
+│   └── electron-builder.yml     # Packaging config for Windows/macOS/Linux
+├── server/                       # Express Backend API
+│   ├── routes/
+│   │   ├── admin.ts             # All /api/admin/* endpoints (admin-only)
+│   │   ├── agent.ts             # /api/agent/* (desktop agent pairing & tracking)
+│   │   ├── ai.ts                # /api/ai/insights
+│   │   ├── auth.ts              # /api/auth/* (login, signup, session, pairing code)
+│   │   ├── employees.ts         # /api/employees
+│   │   ├── projects.ts          # /api/projects
+│   │   ├── screenshots.ts       # /api/screenshots (upload & stream)
+│   │   └── tracking.ts          # /api/tracking/* (start, stop, timeline)
+│   ├── middleware/
+│   │   ├── requireAdmin.ts      # Admin-only guard
+│   │   ├── requireAgentAuth.ts  # JWT guard for Desktop Agent
+│   │   ├── upload.ts            # Multer config (memory storage, 10 MB limit)
+│   │   └── validate.ts          # Zod request body validation helper
+│   ├── services/
+│   │   ├── ai/
+│   │   │   ├── aiProvider.ts        # AI provider abstraction
+│   │   │   ├── focusScore.ts        # Duration-weighted focus score computation
+│   │   │   ├── heuristicProvider.ts # Template-based AI summary generator
+│   │   │   └── ocrService.ts        # Tesseract.js OCR (off by default)
+│   │   ├── screenshotService.ts     # LONGBLOB insert/read helpers
+│   │   └── trackingService.ts       # start/stop/appendActivitySample logic
+│   ├── lib/
+│   │   └── dateRange.ts         # Range helpers (today, week, month, etc.)
+│   ├── migrations/
+│   │   └── 001_screenshots_longblob.sql  # Screenshots → LONGBLOB migration
+│   ├── auth.ts                  # Session creation/destruction, password hashing
+│   ├── db.ts                    # MySQL pool, query helpers (get/all/run), newId()
+│   ├── jwt.ts                   # Agent JWT sign/verify
+│   ├── schema.sql               # Full database schema (auto-applied on boot)
+│   ├── seed.ts                  # Demo data generator (npx tsx server/seed.ts)
+│   ├── sockets.ts               # Socket.IO setup and emitToAll helper
+│   └── index.ts                 # Server entry point, route registration
+├── src/                          # Web Dashboard Frontend (React)
+│   ├── components/
+│   │   ├── admin/               # All Admin Panel views and sub-components
+│   │   ├── dashboard/           # Dashboard-specific components
+│   │   ├── layout/              # Sidebar, Topbar, shared layout
+│   │   ├── marketing/           # Landing page sections
+│   │   ├── tracker/             # TrackerWidget (floating start/stop control)
+│   │   └── ui/                  # Reusable primitives (Button, Modal, etc.)
+│   ├── hooks/
+│   │   ├── useEmployees.ts      # Fetch employees list
+│   │   ├── useSocket.ts         # Socket.IO connection management
+│   │   ├── useTheme.ts          # Dark/light mode toggle
+│   │   ├── useTimeline.ts       # Timeline data fetching
+│   │   └── useTracker.ts        # Tracking start/stop state
+│   ├── lib/
+│   │   └── api.ts               # Typed API client (all fetch calls)
+│   └── pages/
+│       ├── AdminPage.tsx        # Admin Panel shell (sidebar + view routing)
+│       ├── DashboardPage.tsx    # Employee dashboard
+│       ├── LandingPage.tsx      # Marketing landing page
+│       ├── LoginPage.tsx        # Login / signup forms
+│       ├── ReportsPage.tsx      # Employee reports view
+│       └── SettingsPage.tsx     # Employee settings (profile, pairing code, projects)
+├── package.json                  # Web + API monorepo dependencies & scripts
+└── vite.config.ts                # Vite configuration
 ```
+
 
 ---
 
@@ -90,7 +139,7 @@ DB_PORT=xxxx
 DB_NAME=your_database_name
 DB_USER=database_user_name
 DB_PASSWORD=your_password_here
-DB_POOL_SIZE=10
+DB_POOL_SIZE=MySQL_connection_pool_size
 
 # API Configuration
 PORT=4000
@@ -154,6 +203,71 @@ Navigate to the `agent` folder and run the appropriate build command for your OS
 cd agent
 npm run build
 ```
+
+---
+
+## 🛡️ Authentication & Role System
+
+ActivityIQ uses **cookie-based session authentication** (HTTP-only cookies). There are two user roles:
+
+| Role | Access |
+|---|---|
+| **Admin** | Full access to the Admin Panel (all employees, projects, analytics, settings, etc.) |
+| **Employee** | Access to their own Dashboard, Reports, and Settings pages |
+
+### Admin Designation
+A user is granted admin status in one of two ways:
+1. Their email matches `ADMIN_EMAIL` in the environment variables.
+2. Their `users.is_admin` flag in the database is set to `1` (manageable via the Admin Panel).
+
+
+---
+
+## 🖥️ Admin Panel
+
+Admins are automatically redirected to a dedicated Admin Panel on login. The panel has a full sidebar with the following views:
+
+| Tab | Description |
+|---|---|
+| **Overview** | System-wide KPIs: total employees, active tracking count, today/week/month hours, avg focus score, daily trend chart, project distribution pie, recent activity feed |
+| **Real-time Monitoring** | Live view of all employees currently in a tracking session, showing current app, activity score, session duration, and last screenshot timestamp |
+| **Employees** | Full employee roster with search, filter (status/project/role), sort, and pagination. Supports creating, editing, and deleting employees and their linked user accounts |
+| **Employee Detail** | Deep-dive view for a single employee: focus score, time entries history, top apps/URLs, recent screenshots |
+| **Projects** | Create, edit, and delete projects. Shows member count and total hours tracked per project |
+| **Screenshots** | Admin screenshot feed with filters by employee, project, productivity score tier (`low`/`med`/`high`), and keyword search (searches active window, OCR text, and AI summary) |
+| **Analytics** | Company-wide productivity analytics: top apps, top URLs, per-employee focus scores — filterable by time range |
+| **AI Insights** | Company-wide AI-generated productivity summary for a selected time range |
+| **Reports** | Per-employee report table (sessions, total hours) — supports **CSV download** |
+| **Settings** | Platform-wide settings: app name, screenshot frequency, OCR toggle, idle threshold, default role, admin contact email |
+
+---
+
+## 🔌 API & Real-time Sockets
+
+The backend utilizes **Socket.IO** for real-time tracking updates.
+- The **Electron Agent** connects to the server and emits events like `activity_sample` and `screenshot`.
+- The **Web Dashboard** connects to the server and listens for events to update the timeline, focus scores, and team list dynamically without needing a page refresh.
+
+
+
+
+---
+
+## 🤖 AI & OCR Services
+
+### Focus Score (`server/services/ai/focusScore.ts`)
+The focus score is a **duration-weighted average** of the `activity` field across all `activity_samples` for a given employee and time window. No external AI API is required — the score is computed directly from data submitted by the Desktop Agent.
+
+### Heuristic AI Summaries (`server/services/ai/heuristicProvider.ts`)
+Company-wide and per-employee AI insights are generated using a heuristic template engine. No external LLM is called by default. Summaries incorporate total minutes tracked, focus score, top app, and session count.
+
+### OCR — Tesseract.js (`server/services/ai/ocrService.ts`)
+**Disabled by default.** When enabled, OCR text is extracted from each uploaded screenshot using `tesseract.js` (pure JS/WASM — no native binaries required) and stored in the `ocr_text` column on the `screenshots` table. Enable it by setting `OCR_ENABLED=true` in your `.env`.
+
+---
+
+
+
 
 ---
 
