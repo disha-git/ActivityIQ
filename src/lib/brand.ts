@@ -11,7 +11,7 @@ export const MARKETING_NAV = [
 ]
 
 export const FOOTER_LINKS = [
-  { label: 'Support', href: '#support' },
+  { label: 'Support', href: 'mailto:dishadasgupta7602@gmail.com'},
   { label: 'Blog', href: '#blog' },
   { label: 'Contact', href: '#contact' },
   { label: 'Affiliate', href: '#affiliate' },
