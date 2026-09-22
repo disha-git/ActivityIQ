@@ -274,5 +274,8 @@ Company-wide and per-employee AI insights are generated using a heuristic templa
 ## 🤝 Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
-This project is open-source and available under the [MIT License](LICENSE).
+## © Copyright
+
+Copyright (c) 2026 ActivityIQf Contributors. All rights reserved.
+
+Unauthorized copying, modification, distribution, or use of this software, in whole or in part, is strictly prohibited without prior written permission. See the [LICENSE](../../LICENSE) file for full terms and conditions.
