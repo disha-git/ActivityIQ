@@ -56,6 +56,8 @@ export default function MarketingFooter() {
 
         <div className="mt-10 border-t border-slate-100 pt-6 text-xs text-slate-400 dark:border-slate-800 dark:text-slate-500">
           © {new Date().getFullYear()} {APP_NAME}. All rights reserved.
+            <br />
+            Designed &amp; Developed by Disha Dasgupta.
         </div>
       </div>
     </footer>
