@@ -44,6 +44,7 @@ export default function Hero({ onNavigate }: HeroProps) {
             <span className="bg-gradient-to-r from-brand-600 to-accent-600 bg-clip-text text-transparent">
               Actually happens
             </span>
+           
           </motion.h1>
 
           {/* Description */}
@@ -51,10 +52,12 @@ export default function Hero({ onNavigate }: HeroProps) {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            
             className="mx-auto mt-8 max-w-3xl text-center text-xl leading-9 text-slate-500 dark:text-slate-400"
           >
+
             <span className="block">
-              Time tracking, activity insight, and effortless screenshots —
+              Time tracking, activity insight, and effortless screenshots
             </span>
 
             <span className="block">
@@ -88,9 +91,9 @@ export default function Hero({ onNavigate }: HeroProps) {
             </Button>
           </motion.div>
 
-          <p className="mt-4 text-sm text-slate-400 dark:text-slate-500">
-            No credit card required · Free for teams up to 5
-          </p>
+          {/* <p className="mt-4 text-sm text-slate-400 dark:text-slate-500">
+            No credit c
+          </p> */}
         </div>
 
         {/* Stats Card */}

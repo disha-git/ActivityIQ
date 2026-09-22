@@ -29,6 +29,7 @@ export default function FeatureGrid({ onNavigate }: FeatureGridProps) {
     <section id="product" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight text-ink sm:text-4xl dark:text-white">Built for how modern teams actually work</h2>
+        <br />
         <p className="mt-4 text-base text-slate-500 dark:text-slate-400">
           No keylogging. No surveillance theater. Just clear, ethical visibility into where time goes.
         </p>

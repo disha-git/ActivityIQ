@@ -78,7 +78,7 @@ export default function LoginPage({ mode, onNavigate, onLogin }: LoginPageProps)
           {isSignup ? 'Create your account' : 'Welcome back'}
         </h1>
         <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
-          {isSignup ? 'Start tracking in minutes. No credit card required.' : 'Log in to see your team dashboard.'}
+          {isSignup ? 'Start tracking in minutes.' : 'Log in to see your team dashboard.'}
         </p>
 
         <form className="mt-7 flex flex-col gap-4" onSubmit={handleSubmit}>
