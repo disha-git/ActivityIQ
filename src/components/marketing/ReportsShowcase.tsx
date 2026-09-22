@@ -7,8 +7,9 @@ export default function ReportsShowcase() {
     <section id="pricing" className="bg-slate-50/80 py-20 sm:py-28 dark:bg-slate-900/40">
       <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
         <h2 className="text-3xl font-bold tracking-tight text-ink sm:text-4xl dark:text-white">Reports you'll actually read</h2>
-        <p className="mx-auto mt-4 max-w-xl text-base text-slate-500 dark:text-slate-400">
-          Weekly digests, project breakdowns, and exportable data — shareable with clients in a click.
+        <p className="mx-auto mt-4 w-full whitespace-nowrap text-center text-base text-slate-500 dark:text-slate-400">
+          <br />
+          Weekly digests, project breakdowns, and exportable data shareable with clients in a click.
         </p>
 
         <motion.div
